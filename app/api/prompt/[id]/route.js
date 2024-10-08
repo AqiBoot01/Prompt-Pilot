@@ -28,7 +28,7 @@ export const PATCH = async (request, {params}) =>{
     try {
         
         await connectToDB()
-        const {prompt , tag} = request.json()
+        const {prompt , tag} = await request.json()
 
         const singlePrompt = await Prompt.findById(params.id).populate("creator")
 
