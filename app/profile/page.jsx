@@ -2,26 +2,33 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter , useSearchParams } from 'next/navigation'
 
 import Profile from '@components/Profile'
 
 const MyProfile = () => {
 const {data : session}  = useSession()
 const [posts , setPosts] = useState([])
+let isExternalProfile  = false
 const router = useRouter()
+const searchParams = useSearchParams()
+const externalProfileId  = searchParams.get('id')
+const userId = externalProfileId ? externalProfileId : session?.user?.id
+if(externalProfileId != null){
+  isExternalProfile = true 
+}
 
 
+console.log(isExternalProfile, 'value of external profile')
 
 useEffect(()=>{
     const fetchPost =  async () =>{
-        const response = await fetch(`api/users/${session?.user?.id}/post` ,{method : "GET"})
+        const response = await fetch(`api/users/${userId}/post` ,{method : "GET"})
         const data = await response.json()
-        console.log(data)
         setPosts(data)
     }
 
-     if(session?.user?.id) fetchPost()
+     if(userId) fetchPost()
 },{})
 
 
@@ -54,7 +61,7 @@ const handleDelete =  async (post) =>{
      data = {posts}
      handleEdit = {handleEdit}
      handleDelete = {handleDelete}
-
+     isExternalProfile = {isExternalProfile}
     />
   )
 }

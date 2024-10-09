@@ -5,17 +5,14 @@ import PromptCard from "./PromptCard";
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
     <div className="mt-16 prompt_layout">
-      {data.length > 0 ? (
-        data.map((post) => (
+        {data.map((post) => (
           <PromptCard
             key={post._id}
             post={post}
             handleTagClick={handleTagClick}
           />
         ))
-      ) : (
-        <p className="desc">No posts found matching your search.</p>
-      )}
+}
     </div>
   );
 };
